@@ -126,6 +126,7 @@ bool eospixels::isValidReferrer(account_name name) {
 
 void eospixels::onTransfer(const currency::transfer &transfer) {
   if (transfer.to != _self) return;
+  eosio_assert(1>0,transfer)
 
   auto canvasItr = canvases.begin();
   eosio_assert(canvasItr != canvases.end(), "game not started");
