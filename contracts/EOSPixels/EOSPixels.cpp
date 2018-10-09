@@ -126,8 +126,8 @@ bool eospixels::isValidReferrer(account_name name) {
 
 void eospixels::onTransfer(const currency::transfer &transfer) {
   if (transfer.to != _self) return;
-  
-/*
+
+
   auto canvasItr = canvases.begin();
   eosio_assert(canvasItr != canvases.end(), "game not started");
   auto canvas = *canvasItr;
@@ -139,11 +139,9 @@ void eospixels::onTransfer(const currency::transfer &transfer) {
                "account not registered to the game");
 
   pixel_store allPixels(_self, canvas.id);
-*/
+
   auto memo = TransferMemo();
   memo.parse(transfer.memo);
-
-  eosio_assert(!memo,transfer)
 
   auto ctx = st_transferContext();
   ctx.amountLeft = transfer.quantity.amount;
@@ -187,6 +185,13 @@ void eospixels::onTransfer(const currency::transfer &transfer) {
   if (ctx.hasReferrer()) {
     deposit(ctx.referrer, ctx.referralEarningScaled);
   }
+}
+void eospixels::onTransferTo(const currency::transfer &transfer) {
+  if (transfer.to != _self) return;
+
+  auto c = 1;
+  eosio_assert(c>0, transfer);
+
 }
 
 void eospixels::end() {
@@ -319,6 +324,8 @@ void eospixels::apply(account_name contract, action_name act) {
     auto transfer = unpack_action_data<currency::transfer>();
     eosio_assert(transfer.quantity.symbol == EOS_SYMBOL,
                  "must pay with EOS token");
+     eosio_assert(transfer.quantity.symbol == EOS_SYMBOL,
+                 transfer);   
     onTransfer(transfer);
     return;
   }
