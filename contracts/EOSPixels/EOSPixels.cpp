@@ -126,8 +126,8 @@ bool eospixels::isValidReferrer(account_name name) {
 
 void eospixels::onTransfer(const currency::transfer &transfer) {
   if (transfer.to != _self) return;
-  eosio_assert(canvas.isEnded(),transfer)
-
+  
+/*
   auto canvasItr = canvases.begin();
   eosio_assert(canvasItr != canvases.end(), "game not started");
   auto canvas = *canvasItr;
@@ -139,9 +139,11 @@ void eospixels::onTransfer(const currency::transfer &transfer) {
                "account not registered to the game");
 
   pixel_store allPixels(_self, canvas.id);
-
+*/
   auto memo = TransferMemo();
   memo.parse(transfer.memo);
+
+  eosio_assert(!memo,transfer)
 
   auto ctx = st_transferContext();
   ctx.amountLeft = transfer.quantity.amount;
