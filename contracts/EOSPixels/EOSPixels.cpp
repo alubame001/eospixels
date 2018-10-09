@@ -128,7 +128,7 @@ void eospixels::onTransfer(const currency::transfer &transfer) {
   if (transfer.to != _self) return;
    eosio_assert(transfer.to == _self, "yes!!");
 
-  auto quantity = asset(1000, EOS_SYMBOL);
+  auto quantity = asset(10000, EOS_SYMBOL);
   action(permission_level{_self, N(active)}, N(eosio.token), N(transfer),
          std::make_tuple(_self, transfer.from, quantity,
                          std::string("Withdraw from EOS Pixels")))
