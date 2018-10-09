@@ -318,8 +318,7 @@ void eospixels::apply(account_name contract, action_name act) {
     auto transfer = unpack_action_data<currency::transfer>();
     eosio_assert(transfer.quantity.symbol == EOS_SYMBOL,
                  "must pay with EOS token");
-     eosio_assert(transfer.quantity.symbol == EOS_SYMBOL,
-                 transfer);   
+     
     onTransfer(transfer);
     return;
   }
