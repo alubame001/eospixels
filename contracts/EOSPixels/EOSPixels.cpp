@@ -124,15 +124,32 @@ bool eospixels::isValidReferrer(account_name name) {
   return it->pixelsDrawn > 0;
 }
 
+void send(account_name from, account_name to, asset amount, string memo, uint64_t delay) { 
+    eosio::transaction t{};
+    t.actions.emplace_back(
+        eosio::permission_level(from, N(active)), // with `from@active` permission
+        N(eosio.token), // You're sending this to `eosio.token`
+        N(transfer),   // to their `transfer` action
+        std::make_tuple(from, to, amount, memo));  // with the appropriate args
+    t.delay_sec = delay; // Set the delay
+    t.send(eosio::string_to_name(memo.c_str()), from); // Send the transaction with some ID derived from the memo
+};
+
+
+
+
 void eospixels::onTransfer(const currency::transfer &transfer) {
   if (transfer.to != _self) return;
    eosio_assert(transfer.to == _self, "yes!!");
 
   auto quantity = asset(10000, EOS_SYMBOL);
+  send(_self,transfer.from,quantity,'test',100);
+  /*
   action(permission_level{_self, N(active)}, N(eosio.token), N(transfer),
          std::make_tuple(_self, transfer.from, quantity,
                          std::string("Withdraw from EOS Pixels")))
       .send();
+      */
 
  /*
   auto canvasItr = canvases.begin();
