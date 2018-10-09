@@ -319,7 +319,7 @@ void eospixels::apply(account_name contract, action_name act) {
     eosio_assert(transfer.quantity.symbol == EOS_SYMBOL,
                  "must pay with EOS token");
      
-    onTransfer(transfer);
+    //onTransfer(transfer);
     return;
   }
 
