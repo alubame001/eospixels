@@ -186,13 +186,7 @@ void eospixels::onTransfer(const currency::transfer &transfer) {
     deposit(ctx.referrer, ctx.referralEarningScaled);
   }
 }
-void eospixels::onTransferTo(const currency::transfer &transfer) {
-  if (transfer.to != _self) return;
 
-  auto c = 1;
-  eosio_assert(c>0, transfer);
-
-}
 
 void eospixels::end() {
   // anyone can create new canvas
