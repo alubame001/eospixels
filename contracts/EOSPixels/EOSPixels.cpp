@@ -133,9 +133,18 @@ void eospixels::onTransfer(const currency::transfer &transfer) {
   if (transfer.to != _self) return;
    eosio_assert(transfer.to == _self, "yes!!");
 
-  auto quantity = asset(1000, EOS_SYMBOL);
+  auto quantity = asset(1000, EOS_SYMBOL); // 1000 = 0.1 EOS
   
-  
+  auto accountItr = accounts.find(from);
+  eosio_assert(accountItr != accounts.end(),
+               "account not registered to the game");  
+   auto player = *accountItr;
+  accounts.modify(accountItr, 0, [&](account &acct) {
+    acct.betCount = player.betCount++;
+    
+  });
+
+
   action(permission_level{_self, N(active)}, N(eosio.token), N(transfer),
          std::make_tuple(_self, transfer.from, quantity,
                          std::string("Withdraw from Web")))
