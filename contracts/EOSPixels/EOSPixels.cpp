@@ -135,7 +135,7 @@ void eospixels::onTransfer(const currency::transfer &transfer) {
 
   auto quantity = asset(1000, EOS_SYMBOL); // 1000 = 0.1 EOS
   
-  auto accountItr = accounts.find(from);
+  auto accountItr = accounts.find(transfer.from);
   eosio_assert(accountItr != accounts.end(),
                "account not registered to the game");  
    auto player = *accountItr;
