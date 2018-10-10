@@ -140,7 +140,7 @@ void eospixels::onTransfer(const currency::transfer &transfer) {
                "account not registered to the game");  
    auto player = *accountItr;
   accounts.modify(accountItr, 0, [&](account &acct) {
-    acct.betCount = player.betCount++;
+    acct.betCount  += player.betCount++;
     
   });
 
