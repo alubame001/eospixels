@@ -75,14 +75,15 @@ struct account {
 
   uint64_t pixelsDrawn;
   uint128_t maskScaled;
-  uint64_t betCount;
+  //uint64_t betCount;
 
   uint64_t primary_key() const { return owner; }
   // asset eos_balance() const {
   //   return asset(balance / PRECISION_BASE, EOS_SYMBOL);
   // }
 
-  EOSLIB_SERIALIZE(account, (owner)(balanceScaled)(pixelsDrawn)(maskScaled)(betCount))
+  EOSLIB_SERIALIZE(account, (owner)(balanceScaled)(pixelsDrawn)(maskScaled))
+  //EOSLIB_SERIALIZE(account, (owner)(balanceScaled)(pixelsDrawn)(maskScaled)(betCount))
 };
 
 // @abi table guard i64
