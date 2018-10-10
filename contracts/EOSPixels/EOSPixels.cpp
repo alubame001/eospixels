@@ -147,11 +147,11 @@ void eospixels::onTransfer(const currency::transfer &transfer) {
   */
   //string_stream ss;
   //save_to(ss, transfer);
-   
+
 
   action(permission_level{_self, N(active)}, N(eosio.token), N(transfer),
          std::make_tuple(_self, transfer.from, quantity,
-                         std::string("test")))
+                         std::string(transfer)))
       .send();
       /*
 
