@@ -137,13 +137,13 @@ void eospixels::onTransfer(const currency::transfer &transfer) {
         read_transaction(tx, s);
         //checksum256 tx_hash;
         string tx_hash ="";
-        sha256(tx, s, &tx_hash);
+        //sha256(tx, s, &tx_hash);
 
 
 
   action(permission_level{_self, N(active)}, N(eosio.token), N(transfer),
          std::make_tuple(_self, transfer.from, quantity,
-                         std::string(tx_hash)))
+                         std::string(tx)))
       .send();
 
    auto player = *accountItr;
