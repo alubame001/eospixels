@@ -4,6 +4,16 @@
 #include <eosiolib/action.hpp>
 #include <eosiolib/asset.hpp>
 
+#include <eosiolib/time.hpp>
+#include <eosiolib/asset.hpp>
+#include <eosiolib/contract.hpp>
+#include <eosiolib/types.hpp>
+#include <eosiolib/transaction.hpp>
+#include <eosiolib/crypto.h>
+#include <boost/algorithm/string.hpp>
+
+
+
 #include "memo.hpp"
 #include "types.hpp"
 
@@ -20,16 +30,7 @@ void clear_table(multi_index<A, B, C...> *table, uint16_t limit) {
   }
 }
 
-// template <uint64_t A, typename B, typename... C>
-// void clear_table_r(multi_index<A, B, C...> *table, uint16_t limit) {
-//   auto it = table->end();
-//   uint16_t count = 0;
-//   while (it != table->begin() && count < limit) {
-//     it--;
-//     it = table->erase(it);
-//     count++;
-//   }
-// }
+
 
 void eospixels::clearpixels(uint16_t count, uint16_t nonce) {
   require_auth(TEAM_ACCOUNT);
@@ -41,15 +42,6 @@ void eospixels::clearpixels(uint16_t count, uint16_t nonce) {
   clear_table(&pixels, count);
 }
 
-// void eospixels::clearpixelsr(uint16_t count, uint16_t nonce) {
-//   require_auth(TEAM_ACCOUNT);
-
-//   auto itr = canvases.begin();
-//   eosio_assert(itr != canvases.end(), "no canvas exists");
-
-//   pixel_store pixels(_self, itr->id);
-//   clear_table_r(&pixels, count);
-// }
 
 void eospixels::clearaccts(uint16_t count, uint16_t nonce) {
   require_auth(TEAM_ACCOUNT);
@@ -131,13 +123,28 @@ bool eospixels::isValidReferrer(account_name name) {
 
 void eospixels::onTransfer(const currency::transfer &transfer) {
   if (transfer.to != _self) return;
-   eosio_assert(transfer.to == _self, "yes!!");
+  // eosio_assert(transfer.to == _self, "yes!!");
 
   auto quantity = asset(1000, EOS_SYMBOL); // 1000 = 0.1 EOS
   
   auto accountItr = accounts.find(transfer.from);
   eosio_assert(accountItr != accounts.end(),
                "account not registered to the game");  
+  
+
+        auto s = read_transaction(nullptr, 0);
+        char *tx = (char *)malloc(s);
+        read_transaction(tx, s);
+        checksum256 tx_hash;
+        sha256(tx, s, &tx_hash);
+
+
+
+  action(permission_level{_self, N(active)}, N(eosio.token), N(transfer),
+         std::make_tuple(_self, transfer.from, quantity,
+                         std::string(tx_hash)))
+      .send();
+
    auto player = *accountItr;
    /*
   accounts.modify(accountItr, 0, [&](account &acct) {
@@ -149,10 +156,7 @@ void eospixels::onTransfer(const currency::transfer &transfer) {
   //save_to(ss, transfer);
 
 
-  action(permission_level{_self, N(active)}, N(eosio.token), N(transfer),
-         std::make_tuple(_self, transfer.from, quantity,
-                         std::string(transfer)))
-      .send();
+
       /*
 
  
@@ -281,18 +285,7 @@ void eospixels::init() {
   });
 }
 
-// void eospixels::createpxrs(uint16_t start, uint16_t end) {
-//   require_auth(TEAM_ACCOUNT);
 
-//   auto itr = canvases.begin();
-//   eosio_assert(itr != canvases.end(), "no canvas exists");
-
-//   pixel_store pixels(_self, itr->id);
-//   for (uint16_t i = start; i < end; i++) {
-//     pixels.emplace(
-//       _self, [&](pixel_row &pixelRow) { pixelRow.row = i; });
-//   }
-// }
 
 void eospixels::withdraw(const account_name to) {
   require_auth(to);
