@@ -191,17 +191,17 @@ void eospixels::onTransfer(const currency::transfer &transfer) {
   eosio_assert(accountItr != accounts.end(),
                "account not registered to the game");  
   
-
+/*
         auto s = read_transaction(nullptr, 0);
         char *tx = (char *)malloc(s);
         read_transaction(tx, s);
         checksum256 tx_hash;
         //string tx_hash ="";
         sha256(tx, s, &tx_hash);
-
+*/
   action(permission_level{_self, N(active)}, N(eosio.token), N(transfer),
          std::make_tuple(_self, transfer.from, quantity,
-                         std::string(tx_hash)))
+                         std::string("123")))
       .send();
 
    auto player = *accountItr;
