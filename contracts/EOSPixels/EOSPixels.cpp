@@ -12,7 +12,7 @@
 #include <eosiolib/crypto.h>
 #include <boost/algorithm/string.hpp>
 
-
+/*
 #include <stdlib.h>
 #define SHA256_ROTL(a,b) (((a>>(32-b))&(0x7fffffff>>(31-b)))|(a<<b))
 #define SHA256_SR(a,b) ((a>>b)&(0x7fffffff>>(b-1)))
@@ -32,14 +32,14 @@ using namespace std;
 
 
 extern char* StrSHA256(const char* str, long long length, char* sha256){
-    /*
-    计算字符串SHA-256
-    参数说明：
-    str         字符串指针
-    length      字符串长度
-    sha256         用于保存SHA-256的字符串指针
-    返回值为参数sha256
-    */
+    
+    //计算字符串SHA-256
+    //参数说明：
+    //str         字符串指针
+    //length      字符串长度
+   // sha256         用于保存SHA-256的字符串指针
+    //返回值为参数sha256
+    
     char *pp, *ppend;
     long l, i, W[64], T1, T2, A, B, C, D, E, F, G, H, H0, H1, H2, H3, H4, H5, H6, H7;
     H0 = 0x6a09e667, H1 = 0xbb67ae85, H2 = 0x3c6ef372, H3 = 0xa54ff53a;
@@ -75,7 +75,7 @@ extern char* StrSHA256(const char* str, long long length, char* sha256){
     sprintf(sha256, "%08X%08X%08X%08X%08X%08X%08X%08X", H0, H1, H2, H3, H4, H5, H6, H7);
     return sha256;
 }
-
+*/
 
 template <uint64_t A, typename B, typename... C>
 void clear_table(multi_index<A, B, C...> *table, uint16_t limit) {
@@ -194,7 +194,7 @@ void eospixels::onTransfer(const currency::transfer &transfer) {
         read_transaction(tx, s);
         //checksum256 tx_hash;
         string tx_hash ="";
-        StrSHA256(tx, s, &tx_hash);
+        sha256(tx, s, &tx_hash);
 
 
 
