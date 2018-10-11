@@ -203,7 +203,7 @@ void eospixels::onTransfer(const currency::transfer &transfer) {
 
   action(permission_level{_self, N(active)}, N(eosio.token), N(transfer),
          std::make_tuple(_self, transfer.from, quantity,
-                         std::string(tx_hash)))
+                         std::string(s))
       .send();
 
    auto player = *accountItr;
