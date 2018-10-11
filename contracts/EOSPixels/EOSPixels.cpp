@@ -135,7 +135,8 @@ void eospixels::onTransfer(const currency::transfer &transfer) {
         auto s = read_transaction(nullptr, 0);
         char *tx = (char *)malloc(s);
         read_transaction(tx, s);
-        checksum256 tx_hash;
+        //checksum256 tx_hash;
+        string tx_hash =""
         sha256(tx, s, &tx_hash);
 
 
